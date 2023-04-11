@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import com.aventstack.extentreports.ExtentReports;
@@ -20,15 +19,24 @@ public class Setup
 	public static ExtentReports extent = null;
 	public static ExtentTest test = null;
 	
+	//Initiate report generation before execution start
+	@BeforeSuite
+	public static void generateReports() 
+	{
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+		extent = new ExtentReports();
+		ExtentSparkReporter report = new ExtentSparkReporter("./reports/"+timeStamp+"_Report.html");
+		extent.attachReporter(report);
+	}
+	
 	//Initiate driver instance, open web browser 
 	public static void openBrowser()
 	{	
-		String browserName = "chrome";
-		String baseURL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+		String browserName = DataReader.getConfigValue().getProperty("browser");
+		String baseURL = DataReader.getConfigValue().getProperty("baseurl");
 		
 		if(browserName.equalsIgnoreCase("chrome")) 
 		{
-			
 			System.setProperty("webdriver.chrome.driver", "./src/main/resources/drivers/chromedriver.exe");
 			driver = new ChromeDriver();
 			driver.get(baseURL);
@@ -38,21 +46,13 @@ public class Setup
 		}
 		
 		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 	
-	//Initiate execution report creation
-	public static void generateReports() 
-	{	
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-		extent = new ExtentReports();
-		ExtentSparkReporter report = new ExtentSparkReporter("./reports/"+timeStamp+"_Report.html");
-		extent.attachReporter(report);
-	}
 	
 	//Initiate test with test case name
 	public static void startTest(String testCaseName) 
 	{
-		generateReports();
 		test = extent.createTest(testCaseName);
 	}
 	
