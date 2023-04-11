@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -62,8 +63,19 @@ public class DataReader
 				for(int column=0; column<totalColumns; column++) 
 				{
 					XSSFCell columnData = rowData.getCell(column);
-					String cellVal = columnData.getStringCellValue();
-					dataSet[row-1][column] = cellVal;
+					CellType cellType = columnData.getCellType();
+					
+					switch (cellType) 
+					{
+					case STRING:
+						String cellVal = columnData.getStringCellValue();
+						dataSet[row-1][column] = cellVal;
+						break;
+					case NUMERIC:
+						double cellValue = columnData.getNumericCellValue();
+						dataSet[row-1][column] = Double.toString(cellValue);
+						break;
+					}
 				}
 			}
 		} catch (FileNotFoundException e)

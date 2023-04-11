@@ -58,4 +58,18 @@ public class XYZBankHomePage extends Setup
 			e.printStackTrace();
 		}
 	}
+	
+	//Login as Customer
+	public void clickCustomerLoginButton() 
+	{
+		try 
+		{
+			customerLoginButton.click();
+			logStep(Status.PASS, "Customer Login button is clicked successfully");
+		} catch (NoSuchElementException e) 
+		{
+			logStep(Status.FAIL, "Customer Login button is not clicked successfully");
+			e.printStackTrace();
+		}
+	}
 }

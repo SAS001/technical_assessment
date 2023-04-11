@@ -45,7 +45,6 @@ public class BankManagerOperations extends Setup
 		
 		//Delete Customers
 		customerPage.deleteCustomers();
-		
 	}
 
 	@AfterMethod
