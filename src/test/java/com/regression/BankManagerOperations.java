@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import com.core.Setup;
 import com.pages.AddCustomerPage;
 import com.pages.BankManagerOperationsHomePage;
+import com.pages.CustomersPage;
 import com.pages.XYZBankHomePage;
 
 public class BankManagerOperations extends Setup 
@@ -34,6 +35,16 @@ public class BankManagerOperations extends Setup
 		//Add new customers
 		AddCustomerPage addCustomers = new AddCustomerPage();
 		addCustomers.addNewCustomers();
+		
+		//Navigates to Customer Tab
+		managerOperations.clickCustomersButtonMainMenu();
+		
+		//Verify added customers availability
+		CustomersPage customerPage = new CustomersPage();
+		customerPage.verifyCustomersAvailability();
+		
+		//Delete Customers
+		customerPage.deleteCustomers();
 		
 	}
 
